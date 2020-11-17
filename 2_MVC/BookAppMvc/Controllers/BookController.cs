@@ -18,11 +18,33 @@ namespace BookAppMvc.Controllers
         {
             _context = context;
         }
-
+        private static int PAGESIZE = 3;
         // GET: Book
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, string sortString, int? pageNumber)
         {
-            return View(await _context.Books.ToListAsync());
+            //Get all Books
+            var books = _context.Books.AsQueryable();
+            //Searching
+            ViewData["Search"] = searchString;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                books = books.Where(s => s.Title.ToLower().Contains(searchString.ToLower()));
+            }
+            //Sorting
+            ViewData["Sort"] = sortString;
+            switch (sortString)
+            {
+                case "Cheap to Expansive":
+                    books = books.OrderBy(s => s.Price);
+                    break;
+                case "Expansive to Cheap":
+                    books = books.OrderByDescending(s => s.Price);
+                    break;
+                default:
+                    break;
+            }
+            // The AsNoTracking() allow context to not cache the entites that were returned
+            return View(await PaginatedList<Book>.CreateAsync(books.AsNoTracking(), pageNumber ?? 1, PAGESIZE));
         }
 
         // GET: Book/Details/5

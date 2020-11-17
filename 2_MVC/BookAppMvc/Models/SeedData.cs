@@ -50,7 +50,21 @@ namespace BookAppMvc.Models
                         Genre = "Education",
                         Author = "UnKnown",
                         Price = 3.99M
-                    }
+                    },
+                        new Book
+                        {
+                            Title = "Algorithms & Data Structure",
+                            Genre = "Education",
+                            Author = "UnKnown",
+                            Price = 3.99M
+                        },
+                         new Book
+                         {
+                             Title = "Database Systems II",
+                             Genre = "Education",
+                             Author = "UnKnown",
+                             Price = 3.99M
+                         }
                 );
                 context.SaveChanges();
             }

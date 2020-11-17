@@ -1,4 +1,4 @@
-Create a MVC Pages Project = dotnet new mvc -o BookAppMvc
+Create a MVC Project = dotnet new mvc -o [name]
 Install HTTPS Trust = dotnet dev-certs https --trust
 
 Create Migrations = dotnet ef migrations add [Migration name]
