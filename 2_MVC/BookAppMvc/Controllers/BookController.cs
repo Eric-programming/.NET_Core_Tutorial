@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BookAppMvc.Data;
 using BookAppMvc.Models;
@@ -18,33 +16,42 @@ namespace BookAppMvc.Controllers
         {
             _context = context;
         }
-        private static int PAGESIZE = 3;
+        private const int PAGESIZE = 3;
         // GET: Book
         public async Task<IActionResult> Index(string searchString, string sortString, int? pageNumber)
         {
             //Get all Books
             var books = _context.Books.AsQueryable();
+
+
             //Searching
             ViewData["Search"] = searchString;
             if (!String.IsNullOrEmpty(searchString))
             {
                 books = books.Where(s => s.Title.ToLower().Contains(searchString.ToLower()));
             }
+
+
             //Sorting
-            ViewData["Sort"] = sortString;
+            ViewData["Sort"] = sortString ?? "Normal";
             switch (sortString)
             {
-                case "Cheap to Expansive":
-                    books = books.OrderBy(s => s.Price);
+                case "Price Low-High":
+                    books = books.OrderBy(s => (double)s.Price);
                     break;
-                case "Expansive to Cheap":
-                    books = books.OrderByDescending(s => s.Price);
+                case "Price High-Low":
+                    books = books.OrderByDescending(s => (double)s.Price);
                     break;
                 default:
+                    books = books.OrderBy(x => x.ID);
                     break;
             }
-            // The AsNoTracking() allow context to not cache the entites that were returned
-            return View(await PaginatedList<Book>.CreateAsync(books.AsNoTracking(), pageNumber ?? 1, PAGESIZE));
+
+
+            int pageIndex = pageNumber ?? 1;
+            var count = await books.CountAsync();
+            var items = books.Skip((pageIndex - 1) * PAGESIZE).Take(PAGESIZE);
+            return View(new PaginatedList<Book>(await items.ToListAsync(), count, pageIndex, PAGESIZE));
         }
 
         // GET: Book/Details/5

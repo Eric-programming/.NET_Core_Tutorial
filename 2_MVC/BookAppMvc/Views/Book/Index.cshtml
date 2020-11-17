@@ -10,14 +10,15 @@
     <a asp-action="Create">Create New</a>
 </p>
 <div class="d-flex justify-content-between align-items-center pb-2">
-    <span class="text-secondary mb-2">Showing 1 - @(Model.PageSize) of @(Model.TotalItems) Results</span>
+    <span class="text-secondary mb-2">Showing 1 - @(Model.TotalItems < Model.PageSize ? Model.TotalItems :
+                Model.PageSize) of @(Model.TotalItems) Results</span>
     <form asp-action="Index" method="get" class="form-inline">
         <div class="form-actions no-color">
 
             <p>
                 <select class="mr-3 custom-select" name="SortString"
-                    asp-items="@(new SelectList(new String[2] { "Cheap to Expansive", "Expansive to Cheap" }))">
-                    <option disabled selected>Sort</option>
+                    asp-items="@(new SelectList(new String[3] { "Price Low-High", "Price High-Low", "Normal" }))">
+                    <option>@ViewData["Sort"]</option>
                 </select>
                 <input type="text" class="form-control" name="SearchString" value="@ViewData["Search"]" />
                 <input type="submit" value="Search" class="btn btn-info" />
