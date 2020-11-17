@@ -9,18 +9,32 @@ namespace BookApp
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            Environment = env;
         }
-
+        public IWebHostEnvironment Environment { get; }
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<BookDbContext>(options =>
-                      options.UseInMemoryDatabase("BookStorage"));
+            // services.AddDbContext<BookDbContext>(options =>
+            //           options.UseInMemoryDatabase("BookStorage"));
+
+
+            if (Environment.IsDevelopment())
+            {
+                services.AddDbContext<BookDbContext>(options =>
+           options.UseSqlite(Configuration.GetConnectionString("BookAppContext")));
+            }
+            else
+            {
+                services.AddDbContext<BookDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("BookAppContext_Prod")));
+            }
             services.AddRazorPages();
         }
 

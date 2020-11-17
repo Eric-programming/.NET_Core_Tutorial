@@ -14392,6 +14392,11 @@
   "RootNamespace": "BookApp",
   "Documents": [
     {
+      "FilePath": "c:\\Users\\Eric0\\Desktop\\ASP.NET_Core_Tutorial\\1_RazorPages\\BookApp\\Pages\\Books\\Index.cshtml",
+      "TargetPath": "Pages\\Books\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\Eric0\\Desktop\\ASP.NET_Core_Tutorial\\1_RazorPages\\BookApp\\Pages\\Privacy.cshtml",
       "TargetPath": "Pages\\Privacy.cshtml",
       "FileKind": "mvc"
@@ -14402,8 +14407,18 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\Eric0\\Desktop\\ASP.NET_Core_Tutorial\\1_RazorPages\\BookApp\\Pages\\Books\\Delete.cshtml",
+      "TargetPath": "Pages\\Books\\Delete.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\Eric0\\Desktop\\ASP.NET_Core_Tutorial\\1_RazorPages\\BookApp\\Pages\\Index.cshtml",
       "TargetPath": "Pages\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\Eric0\\Desktop\\ASP.NET_Core_Tutorial\\1_RazorPages\\BookApp\\Pages\\Books\\Edit.cshtml",
+      "TargetPath": "Pages\\Books\\Edit.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -14417,6 +14432,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\Users\\Eric0\\Desktop\\ASP.NET_Core_Tutorial\\1_RazorPages\\BookApp\\Pages\\Books\\Details.cshtml",
+      "TargetPath": "Pages\\Books\\Details.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\Users\\Eric0\\Desktop\\ASP.NET_Core_Tutorial\\1_RazorPages\\BookApp\\Pages\\Shared\\_ValidationScriptsPartial.cshtml",
       "TargetPath": "Pages\\Shared\\_ValidationScriptsPartial.cshtml",
       "FileKind": "mvc"
@@ -14424,6 +14444,11 @@
     {
       "FilePath": "c:\\Users\\Eric0\\Desktop\\ASP.NET_Core_Tutorial\\1_RazorPages\\BookApp\\Pages\\Shared\\_Layout.cshtml",
       "TargetPath": "Pages\\Shared\\_Layout.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\Eric0\\Desktop\\ASP.NET_Core_Tutorial\\1_RazorPages\\BookApp\\Pages\\Books\\Create.cshtml",
+      "TargetPath": "Pages\\Books\\Create.cshtml",
       "FileKind": "mvc"
     }
   ],
