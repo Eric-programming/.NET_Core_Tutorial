@@ -4,7 +4,7 @@ namespace UniversitySystem.Models
 {
     public class OfficeAssignment
     {
-        [Key]
+        [Key]//Set InstrctorId as primary key
         public int InstructorID { get; set; }
         [StringLength(50)]
         [Display(Name = "Office Location")]

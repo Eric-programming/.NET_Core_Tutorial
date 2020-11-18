@@ -22,9 +22,9 @@ namespace UniversitySystem.Models
         [Display(Name = "Start Date")]
         public DateTime StartDate { get; set; }
 
-        public int? InstructorID { get; set; }
+        public int? InstructorID { get; set; }//Foreign Key
 
-        public Instructor Administrator { get; set; }
+        public Instructor Administrator { get; set; }//Instructor property
         public ICollection<Course> Courses { get; set; }
     }
 }

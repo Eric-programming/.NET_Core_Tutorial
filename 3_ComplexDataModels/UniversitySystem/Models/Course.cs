@@ -6,7 +6,7 @@ namespace UniversitySystem.Models
 {
     public class Course
     {
-        //The DatabaseGenerated attribute allow primary key to be created by user instead of db
+        //The DatabaseGeneratedOption.None allow primary key to be created by user instead of db
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Display(Name = "Number")]
         public int CourseID { get; set; }
