@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace UniversitySystem.Migrations
 {
-    public partial class ComplexDataModel : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -58,21 +58,6 @@ namespace UniversitySystem.Migrations
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                 });
-            /**
-Temporary Data for Development ONLY
-            **/
-            migrationBuilder.Sql("INSERT INTO dbo.Department (Name, Budget, StartDate) VALUES ('Temp', 0.00, GETDATE())");
-            // Default value for FK points to department created above, with
-            // defaultValue changed to 1 in following AddColumn statement.
-
-            migrationBuilder.AddColumn<int>(
-                name: "DepartmentID",
-                table: "Course",
-                nullable: false,
-                defaultValue: 1);
-            /**
-Temporary Data for Development ONLY
-            **/
 
             migrationBuilder.CreateTable(
                 name: "OfficeAssignment",

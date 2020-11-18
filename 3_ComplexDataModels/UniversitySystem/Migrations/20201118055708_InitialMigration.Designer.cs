@@ -10,8 +10,8 @@ using UniversitySystem.Data;
 namespace UniversitySystem.Migrations
 {
     [DbContext(typeof(UniversityContext))]
-    [Migration("20201118015933_ComplexDataModel")]
-    partial class ComplexDataModel
+    [Migration("20201118055708_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
