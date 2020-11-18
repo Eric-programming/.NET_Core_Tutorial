@@ -10,24 +10,23 @@ using UniversitySystem.Models;
 
 namespace UniversitySystem.Controllers
 {
-    public class InstructorController : Controller
+    public class DepartmentController : Controller
     {
         private readonly UniversityContext _context;
 
-        public InstructorController(UniversityContext context)
+        public DepartmentController(UniversityContext context)
         {
             _context = context;
         }
 
-        // GET: Instructor
+        // GET: Department
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Instructors.Include(i => i.OfficeAssignment)
-          .Include(i => i.CourseAssignments)
-            .ThenInclude(i => i.Course).ToListAsync());
+            var universityContext = _context.Departments.Include(d => d.Administrator);
+            return View(await universityContext.ToListAsync());
         }
 
-        // GET: Instructor/Details/5
+        // GET: Department/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -35,39 +34,42 @@ namespace UniversitySystem.Controllers
                 return NotFound();
             }
 
-            var instructor = await _context.Instructors
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (instructor == null)
+            var department = await _context.Departments
+                .Include(d => d.Administrator)
+                .FirstOrDefaultAsync(m => m.DepartmentID == id);
+            if (department == null)
             {
                 return NotFound();
             }
 
-            return View(instructor);
+            return View(department);
         }
 
-        // GET: Instructor/Create
+        // GET: Department/Create
         public IActionResult Create()
         {
+            ViewData["InstructorID"] = new SelectList(_context.Instructors, "ID", "FirstMidName");
             return View();
         }
 
-        // POST: Instructor/Create
+        // POST: Department/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,LastName,FirstMidName,HireDate")] Instructor instructor)
+        public async Task<IActionResult> Create([Bind("DepartmentID,Name,Budget,StartDate,InstructorID")] Department department)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(instructor);
+                _context.Add(department);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(instructor);
+            ViewData["InstructorID"] = new SelectList(_context.Instructors, "ID", "FirstMidName", department.InstructorID);
+            return View(department);
         }
 
-        // GET: Instructor/Edit/5
+        // GET: Department/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -75,22 +77,23 @@ namespace UniversitySystem.Controllers
                 return NotFound();
             }
 
-            var instructor = await _context.Instructors.FindAsync(id);
-            if (instructor == null)
+            var department = await _context.Departments.FindAsync(id);
+            if (department == null)
             {
                 return NotFound();
             }
-            return View(instructor);
+            ViewData["InstructorID"] = new SelectList(_context.Instructors, "ID", "FirstMidName", department.InstructorID);
+            return View(department);
         }
 
-        // POST: Instructor/Edit/5
+        // POST: Department/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,LastName,FirstMidName,HireDate")] Instructor instructor)
+        public async Task<IActionResult> Edit(int id, [Bind("DepartmentID,Name,Budget,StartDate,InstructorID")] Department department)
         {
-            if (id != instructor.ID)
+            if (id != department.DepartmentID)
             {
                 return NotFound();
             }
@@ -99,12 +102,12 @@ namespace UniversitySystem.Controllers
             {
                 try
                 {
-                    _context.Update(instructor);
+                    _context.Update(department);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!InstructorExists(instructor.ID))
+                    if (!DepartmentExists(department.DepartmentID))
                     {
                         return NotFound();
                     }
@@ -115,10 +118,11 @@ namespace UniversitySystem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(instructor);
+            ViewData["InstructorID"] = new SelectList(_context.Instructors, "ID", "FirstMidName", department.InstructorID);
+            return View(department);
         }
 
-        // GET: Instructor/Delete/5
+        // GET: Department/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -126,30 +130,31 @@ namespace UniversitySystem.Controllers
                 return NotFound();
             }
 
-            var instructor = await _context.Instructors
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (instructor == null)
+            var department = await _context.Departments
+                .Include(d => d.Administrator)
+                .FirstOrDefaultAsync(m => m.DepartmentID == id);
+            if (department == null)
             {
                 return NotFound();
             }
 
-            return View(instructor);
+            return View(department);
         }
 
-        // POST: Instructor/Delete/5
+        // POST: Department/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var instructor = await _context.Instructors.FindAsync(id);
-            _context.Instructors.Remove(instructor);
+            var department = await _context.Departments.FindAsync(id);
+            _context.Departments.Remove(department);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool InstructorExists(int id)
+        private bool DepartmentExists(int id)
         {
-            return _context.Instructors.Any(e => e.ID == id);
+            return _context.Departments.Any(e => e.DepartmentID == id);
         }
     }
 }

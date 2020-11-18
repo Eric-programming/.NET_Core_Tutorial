@@ -6,4 +6,4 @@ Create Database = dotnet ef database update
 
 
 Code Gen = dotnet aspnet-codegenerator  controller -name [ENTITY]Controller -m [ENTITY] -dc [YOUR-DB-CONTEXT] -outDir Controllers --useDefaultLayout --referenceScriptLibraries
-dotnet aspnet-codegenerator controller -name InstructorController -m Instructor -dc UniversityContext -outDir Controllers --useDefaultLayout --referenceScriptLibraries
+dotnet aspnet-codegenerator controller -name OfficeAssignmentController -m OfficeAssignment -dc UniversityContext -outDir Controllers --useDefaultLayout --referenceScriptLibraries
