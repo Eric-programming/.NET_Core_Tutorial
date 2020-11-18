@@ -8,7 +8,7 @@ namespace UniversitySystem.Models
     {
         //The DatabaseGeneratedOption.None allow primary key to be created by user instead of db
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [Display(Name = "Number")]
+        [Display(Name = "Course ID")]
         public int CourseID { get; set; }
 
         [StringLength(50, MinimumLength = 3)]

@@ -5,6 +5,5 @@ Create Migrations = dotnet ef migrations add [Migration name]
 Create Database = dotnet ef database update
 
 
-
 Code Gen = dotnet aspnet-codegenerator  controller -name [ENTITY]Controller -m [ENTITY] -dc [YOUR-DB-CONTEXT] -outDir Controllers --useDefaultLayout --referenceScriptLibraries
 dotnet aspnet-codegenerator controller -name BookController -m Book -dc BookDbContext -outDir Controllers --useDefaultLayout --referenceScriptLibraries
