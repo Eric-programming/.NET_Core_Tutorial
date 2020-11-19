@@ -13,6 +13,13 @@ namespace UniversitySystem.Controllers
     public class CourseController : Controller
     {
         private readonly UniversityContext _context;
+        private void PopulateDepartmentsDropDownList(object selectedDepartment = null)//Select department ID
+        {
+            var departmentsQuery = from d in _context.Departments
+                                   orderby d.Name
+                                   select d;
+            ViewBag.DepartmentID = new SelectList(departmentsQuery.AsNoTracking(), "DepartmentID", "Name", selectedDepartment);
+        }
 
         public CourseController(UniversityContext context)
         {
@@ -36,6 +43,7 @@ namespace UniversitySystem.Controllers
 
             var course = await _context.Courses
                 .Include(c => c.Department)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.CourseID == id);
             if (course == null)
             {
@@ -48,7 +56,7 @@ namespace UniversitySystem.Controllers
         // GET: Course/Create
         public IActionResult Create()
         {
-            ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "DepartmentID");
+            PopulateDepartmentsDropDownList();
             return View();
         }
 
@@ -65,7 +73,8 @@ namespace UniversitySystem.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "DepartmentID", course.DepartmentID);
+            PopulateDepartmentsDropDownList(course.DepartmentID);
+
             return View(course);
         }
 
@@ -77,12 +86,12 @@ namespace UniversitySystem.Controllers
                 return NotFound();
             }
 
-            var course = await _context.Courses.FindAsync(id);
+            var course = await _context.Courses.AsNoTracking().FirstOrDefaultAsync(x => x.CourseID == id);
             if (course == null)
             {
                 return NotFound();
             }
-            ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "DepartmentID", course.DepartmentID);
+            PopulateDepartmentsDropDownList(course.DepartmentID);
             return View(course);
         }
 
@@ -118,7 +127,7 @@ namespace UniversitySystem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "DepartmentID", course.DepartmentID);
+            PopulateDepartmentsDropDownList(course.DepartmentID);
             return View(course);
         }
 
@@ -132,6 +141,7 @@ namespace UniversitySystem.Controllers
 
             var course = await _context.Courses
                 .Include(c => c.Department)
+                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.CourseID == id);
             if (course == null)
             {

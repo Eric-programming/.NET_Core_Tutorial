@@ -9,7 +9,7 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>
@@ -22,7 +22,7 @@
                 @Html.DisplayNameFor(model => model.HireDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OfficeAssignment)
+                @Html.DisplayNameFor(model => model.OfficeAssignment.Location)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CourseAssignments.ElementAt(0).Course)
@@ -50,7 +50,7 @@
                     @foreach (var course in item.CourseAssignments)
                     {
                         @course.Course.CourseID @: @course.Course.Title
-
+                        <br />
                     }
                 </td>
                 <td>
