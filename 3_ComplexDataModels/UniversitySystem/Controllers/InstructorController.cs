@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using UniversitySystem.Data;
 using UniversitySystem.Models;
@@ -138,33 +137,69 @@ namespace UniversitySystem.Controllers
                 .Include(i => i.CourseAssignments)
                     .ThenInclude(i => i.Course)
                 .FirstOrDefaultAsync(m => m.ID == id);
-            System.Console.WriteLine(selectedCourses.Count());
-
             if (instructorToUpdate == null)
             {
                 return NotFound();
             }
-
-            try
+            var res = await TryUpdateModelAsync<Instructor>(
+         instructorToUpdate,
+         "",
+         i => i.FirstMidName, i => i.LastName, i => i.HireDate, i => i.OfficeAssignment);
+            if (res)
             {
-                await TryUpdateModelAsync<Instructor>(
-                     instructorToUpdate,
-                     "",
-                     i => i.FirstMidName, i => i.LastName, i => i.HireDate, i => i.OfficeAssignment);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!InstructorExists(id))
+                if (String.IsNullOrWhiteSpace(instructorToUpdate.OfficeAssignment?.Location))
                 {
-                    return NotFound();
+                    instructorToUpdate.OfficeAssignment = null;
                 }
-                else
+                UpdateInstructorCourses(selectedCourses, instructorToUpdate);
+                try
                 {
-                    throw;
+                    await _context.SaveChangesAsync();
                 }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!InstructorExists(id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
             }
+            UpdateInstructorCourses(selectedCourses, instructorToUpdate);
+            PopulateCoursesData(instructorToUpdate);
             return RedirectToAction(nameof(Index));
+        }
+
+        private void UpdateInstructorCourses(string[] selectedCourses, Instructor instructorToUpdate)
+        {
+            //Empty list if courses are empty
+            if (selectedCourses == null)
+            {
+                instructorToUpdate.CourseAssignments = new List<CourseAssignment>();
+                return;
+            }
+
+            var instructorCourses = new HashSet<int>
+                (instructorToUpdate.CourseAssignments.Select(c => c.Course.CourseID));//All the courseId that current instructor have
+            foreach (var course in _context.Courses)
+            {
+                //If current course is inside the selected course list but current instuctor doesn't have it, then we add it
+                if (selectedCourses.Contains(course.CourseID.ToString()) && !instructorCourses.Contains(course.CourseID))
+                {
+
+                    instructorToUpdate.CourseAssignments.Add(new CourseAssignment { InstructorID = instructorToUpdate.ID, CourseID = course.CourseID });
+                }
+                //Else if current course is not inside the selected course list but current instructor has it, then we remove it
+                else if (!selectedCourses.Contains(course.CourseID.ToString()) && instructorCourses.Contains(course.CourseID))
+                {
+                    CourseAssignment courseToRemove = instructorToUpdate.CourseAssignments.FirstOrDefault(i => i.CourseID == course.CourseID);
+                    _context.Remove(courseToRemove);
+                }
+            }
         }
 
         // GET: Instructor/Delete/5

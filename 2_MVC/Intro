@@ -1,3 +1,7 @@
-1. Familiar with MVC
-2. Sorting/ Paging/ Filtering
-3. Advance EF Core
+- Familiar with .Net Core MVC
+- Sorting, Searching, Pagination
+- Use Sql Server
+- Work with complex data models AND EF (1-1, 1-many, many-many)
+- Get Data from related table
+- Change data from related table
+- Use Inheritance

@@ -108,32 +108,6 @@ namespace UniversitySystem.Migrations
                     b.ToTable("Enrollment");
                 });
 
-            modelBuilder.Entity("UniversitySystem.Models.Instructor", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("FirstMidName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("FirstName");
-
-                    b.Property<DateTime>("HireDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Instructor");
-                });
-
             modelBuilder.Entity("UniversitySystem.Models.OfficeAssignment", b =>
                 {
                     b.Property<int>("InstructorID")
@@ -148,15 +122,12 @@ namespace UniversitySystem.Migrations
                     b.ToTable("OfficeAssignment");
                 });
 
-            modelBuilder.Entity("UniversitySystem.Models.Student", b =>
+            modelBuilder.Entity("UniversitySystem.Models.Person", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
-
-                    b.Property<DateTime>("EnrollmentDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("FirstMidName")
                         .IsRequired()
@@ -170,6 +141,26 @@ namespace UniversitySystem.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("ID");
+
+                    b.ToTable("Person");
+                });
+
+            modelBuilder.Entity("UniversitySystem.Models.Instructor", b =>
+                {
+                    b.HasBaseType("UniversitySystem.Models.Person");
+
+                    b.Property<DateTime>("HireDate")
+                        .HasColumnType("datetime2");
+
+                    b.ToTable("Instructor");
+                });
+
+            modelBuilder.Entity("UniversitySystem.Models.Student", b =>
+                {
+                    b.HasBaseType("UniversitySystem.Models.Person");
+
+                    b.Property<DateTime>("EnrollmentDate")
+                        .HasColumnType("datetime2");
 
                     b.ToTable("Student");
                 });
@@ -241,6 +232,24 @@ namespace UniversitySystem.Migrations
                         .IsRequired();
 
                     b.Navigation("Instructor");
+                });
+
+            modelBuilder.Entity("UniversitySystem.Models.Instructor", b =>
+                {
+                    b.HasOne("UniversitySystem.Models.Person", null)
+                        .WithOne()
+                        .HasForeignKey("UniversitySystem.Models.Instructor", "ID")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("UniversitySystem.Models.Student", b =>
+                {
+                    b.HasOne("UniversitySystem.Models.Person", null)
+                        .WithOne()
+                        .HasForeignKey("UniversitySystem.Models.Student", "ID")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("UniversitySystem.Models.Course", b =>
