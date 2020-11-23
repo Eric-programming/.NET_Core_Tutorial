@@ -1,0 +1,30 @@
+@page
+@model DIapp.Pages.CreateModel
+@inject DIapp.Repo.IUserRepo _userRepo
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="user.id" class="control-label"></label>
+            <input asp-for="user.id" class="form-control" />
+            <span asp-validation-for="user.id" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="user.Name" class="control-label"></label>
+            <input asp-for="user.Name" class="form-control" />
+            <span asp-validation-for="user.Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </form>
+    <p>Total Users = @_userRepo.GetUser().Count()</p>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
