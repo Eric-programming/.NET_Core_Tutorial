@@ -1,0 +1,7 @@
+dotnet new webapi -o [name]
+
+dotnet aspnet-codegenerator controller -name [controller name] -async -api -m [model name] -dc [context name] -outDir Controllers
+dotnet aspnet-codegenerator controller -name BookController -async -api -m Book -dc BookContext -outDir Controllers
+
+Create Migrations = dotnet ef migrations add [Migration name]
+Create Database = dotnet ef database update
