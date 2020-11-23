@@ -31,7 +31,7 @@ namespace BookApp.Pages.Books
             //Get Distinct Genre in list of string
             IQueryable<string> genreQuery = (from m in _context.Books
                                              orderby m.Genre
-                                             select m.Genre);
+                                             select m.Genre).Distinct();
             //Get All Books
             var books = from m in _context.Books
                         select m;
